@@ -1,0 +1,23 @@
+import {build} from 'esbuild';
+import {createRequire} from 'node:module';
+import {readFile} from 'node:fs/promises';
+import assert from 'node:assert/strict';
+const require=createRequire(import.meta.url),wr=createRequire(require.resolve('wrangler/package.json'));
+const {Miniflare}=wr('miniflare');
+await build({stdin:{contents:"import {readSpace,changeSpace,json,ownerOf} from './lib/space'; export default {async fetch(req){try{const owner=ownerOf(req);return json(req.method==='GET'?await readSpace(owner):await changeSpace(owner,await req.json()))}catch(e){return json({error:e.message},400)}}}",resolveDir:process.cwd(),loader:'ts'},outfile:'.sites-runtime/test-engine.mjs',bundle:true,format:'esm',platform:'browser',external:['cloudflare:workers']});
+const mf=new Miniflare({modules:true,scriptPath:'.sites-runtime/test-engine.mjs',compatibilityDate:'2026-05-15',compatibilityFlags:['nodejs_compat'],d1Databases:['DB'],r2Buckets:['BUCKET']});
+try{const db=await mf.getD1Database('DB');await db.exec((await readFile('drizzle/0000_familiar_sister_grimm.sql','utf8')).replaceAll('\n',' '));
+const request=async(data,user='local-test-user')=>{const r=await mf.dispatchFetch('http://localhost/',{headers:{'oai-authenticated-user-id':user},...(data?{method:'POST',body:JSON.stringify(data)}:{})});return {status:r.status,body:await r.json()}};
+let {body:s}=await request();assert.equal(s.revision,0);
+const a={op:'add_task',revision:0,requestId:crypto.randomUUID(),listId:'inbox',text:'Teste técnico'};
+let r=await request(a);assert.equal(r.status,200);s=r.body;assert.equal(s.lists[0].items.length,1);
+r=await request(a);assert.equal(r.body.revision,1);assert.equal(r.body.lists[0].items.length,1);
+r=await request({...a,requestId:crypto.randomUUID()});assert.equal(r.status,400);
+r=await request(null,'another-user');assert.equal(r.body.lists[0].items.length,0);
+r=await request({...a,op:'save_diary',revision:1,text:'',requestId:crypto.randomUUID()});assert.equal(r.status,400);
+r=await request({...a,op:'save_diary',revision:1,text:'Um registro de teste.',date:'2026-10-30',audio:{base64:btoa('test-audio-bytes'),mime:'audio/webm'},requestId:crypto.randomUUID()});assert.equal(r.status,200);s=r.body;assert.equal(s.entries.length,1);
+assert.ok(await(await mf.getR2Bucket('BUCKET')).get(s.entries[0].audio));
+r=await request({op:'delete_diary',revision:s.revision,id:s.entries[0].id,requestId:crypto.randomUUID()});assert.equal(r.status,200);assert.equal(r.body.entries.length,0);assert.equal(await(await mf.getR2Bucket('BUCKET')).get(s.entries[0].audio),null);
+r=await request(null,'');assert.equal(r.status,400);
+console.log('PASS: persistência D1, idempotência, conflito de versão, isolamento, validação, áudio R2, exclusão e acesso sem identidade.');
+}finally{await mf.dispose()}
