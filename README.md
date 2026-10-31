@@ -8,9 +8,9 @@ Novos registros deste Site ficam em D1 (texto) e R2 (áudio), vinculados à iden
 
 ## Uso
 
-Use as abas Minhas listas e Meu diário. Grave até dois minutos, ouça e salve. O botão só pede acesso ao microfone ao ser tocado. Dentro do ChatGPT, o host precisa permitir microfone; sem permissão, use o ditado da conversa ou abra o site. Não há transcrição automática nem chave de API externa.
+As listas ficam em `/`; o diário fica em `/diario`. As telas não têm abas de navegação entre si. No ChatGPT, `open_lists` mostra somente as listas sob demanda, e `open_diary` mostra somente o diário. O lembrete nativo é separado e depende de horário e frequência escolhidos; não há tarefa agendada configurada por este Site. Grave até dois minutos, ouça e salve. O botão só pede acesso ao microfone ao ser tocado. Dentro do ChatGPT, o host precisa permitir microfone; sem permissão, use o ditado da conversa ou abra o site. Não há transcrição automática nem chave de API externa.
 
-O endpoint POST /mcp expõe open_lists, open_diary, update_space e read_audio, além do recurso ui://mamae-mins/space.html. Sites gerencia autenticação e conexão privada.
+O endpoint POST /mcp expõe open_lists, open_diary, update_space e read_audio, além do recurso ui://mamae-mins/lists.html e ui://mamae-mins/diary.html. Sites gerencia autenticação e conexão privada.
 
 ## Desenvolvimento
 
