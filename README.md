@@ -1,5 +1,7 @@
 # Mamãe Mins · Listas e diário
 
+Os três plugins relacionados e suas configurações estão salvos em `plugins/` e `config/`. Veja [o inventário e os limites do backup](config/README.md).
+
 Site privado em português. Texto em D1 e áudio em R2, vinculados à identidade autenticada do Sites. O Site e as ferramentas MCP usam a mesma base. A memória histórica do plugin não é importada automaticamente.
 
 ## Cartões na conversa

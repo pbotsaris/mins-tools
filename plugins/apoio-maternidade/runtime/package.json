@@ -1,0 +1,8 @@
+{
+  "name": "mamae-mins-runtime",
+  "version": "0.4.0",
+  "private": true,
+  "type": "module",
+  "scripts": {"test": "node --test test/*.test.mjs", "dev": "MAMAE_MINS_DEMO=1 node src/server.mjs", "start": "node src/server.mjs"}
+}
+

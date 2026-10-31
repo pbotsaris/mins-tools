@@ -1,0 +1,3 @@
+# Project-related settings only; reference snapshot, not automatically loaded.
+[projects."/Users/marinakagan/dev/mins-tools"]
+trust_level = "trusted"

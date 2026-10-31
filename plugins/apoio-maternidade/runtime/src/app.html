@@ -1,0 +1,55 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Mamãe Mins</title>
+<style>
+:root{color-scheme:light dark;font:16px/1.45 system-ui,sans-serif;color:var(--color-text-primary,light-dark(#28383c,#eff4f5));background:transparent}*{box-sizing:border-box}body{margin:0;padding:16px}main{max-width:680px;margin:auto}h1{font-size:1.1rem;margin:0 0 14px}button,input,textarea{font:inherit}button,input,textarea{border:1px solid light-dark(#c7d5d6,#566365);border-radius:10px;background:light-dark(#fff,#202b2d);color:inherit}button{min-height:44px;padding:8px 12px;cursor:pointer}button:disabled{opacity:.6;cursor:wait}input[type=text],textarea{padding:10px;width:100%;min-width:0}textarea{min-height:155px;resize:vertical}.title{font-size:1.12rem;font-weight:600;margin:0 0 14px}.row{display:grid;grid-template-columns:44px minmax(0,1fr) 44px;gap:6px;align-items:start;margin:10px 0}.row input[type=checkbox]{appearance:auto;width:24px;height:24px;margin:10px}.fields{display:grid;gap:6px}.done .itemtext{text-decoration:line-through;opacity:.75}.category{font-size:16px}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.primary{background:light-dark(#dceef2,#284850);border-color:light-dark(#9dbfc8,#537a85)}.status{font-size:.9rem;min-height:28px;margin:10px 0;color:light-dark(#506367,#bdcfd2)}.error{color:light-dark(#a42f34,#ffb5b5)}.hint{font-size:.87rem;color:light-dark(#5b6e72,#bdd0d4)}label{display:block;margin-bottom:6px}.empty{padding:14px 0}.preview{color:light-dark(#795500,#f3d481);font-size:.86rem}button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid #7babbc;outline-offset:2px}[hidden]{display:none!important}@media(max-width:380px){body{padding:10px}.actions button{flex:1}.row{gap:3px}}
+</style></head><body><main aria-label="Mamãe Mins"><h1>Mamãe Mins</h1><p id="mode" class="preview" hidden>Ambiente de teste com dados fictícios. Não é uma conexão real ao ChatGPT.</p><div id="content"><p class="empty">Aguardando a lista ou o cartão solicitado na conversa.</p></div><p id="status" class="status" role="status" aria-live="polite"></p><p class="hint">Você também pode pedir alterações na conversa. Para ditar, use o microfone do próprio ChatGPT.</p></main>
+<script>
+function uuid(){if(crypto.randomUUID)return crypto.randomUUID();const bytes=crypto.getRandomValues(new Uint8Array(16));bytes[6]=(bytes[6]&15)|64;bytes[8]=(bytes[8]&63)|128;return Array.from(bytes,(b,i)=>([4,6,8,10].includes(i)?'-':'')+b.toString(16).padStart(2,'0')).join('')}
+const $=id=>document.getElementById(id), pending=new Map();let seq=0, current=null,draft=null,busy=false,dirty=false,lastRequest=null,showCategories=false,backup=null;
+function notify(method,params){window.parent.postMessage({jsonrpc:'2.0',method,params},'*')}
+function request(method,params){return new Promise((resolve,reject)=>{const id='mm-'+(++seq);const timer=setTimeout(()=>{pending.delete(id);reject(Error('Não foi possível confirmar o salvamento. O rascunho foi mantido.'))},20000);pending.set(id,{resolve,reject,timer});window.parent.postMessage({jsonrpc:'2.0',id,method,params},'*')})}
+function status(message,error=false){$('status').textContent=message;$('status').classList.toggle('error',error)}
+function changed(){dirty=true;lastRequest=null;if(!busy)$('content').querySelectorAll('button').forEach(b=>b.disabled=false);status('Alterações ainda não salvas.');}
+function input(value,label,handler){const el=document.createElement('input');el.type='text';el.value=value||'';el.setAttribute('aria-label',label);el.addEventListener('input',()=>handler(el.value));return el}
+function button(label,handler,cls=''){const b=document.createElement('button');b.type='button';b.textContent=label;b.className=cls;b.disabled=busy;b.onclick=handler;return b}
+function render(){
+ const box=$('content');box.replaceChildren();if(!draft)return;
+ if(draft.kind==='list'){
+  const title=input(draft.list.title,'Título da lista',v=>{draft.list.title=v;changed()});title.className='title';box.append(title);
+  for(const item of draft.list.items){
+   const row=document.createElement('div');row.className='row'+(item.completed?' done':'');
+   const check=document.createElement('input');check.type='checkbox';check.checked=item.completed;check.disabled=busy;check.setAttribute('aria-label','Concluir '+item.text);check.onchange=()=>{item.completed=check.checked;changed();saveList()};
+   const fields=document.createElement('div');fields.className='fields';const text=input(item.text,'Item da lista',v=>{item.text=v;changed()});text.className='itemtext';fields.append(text);
+   if(showCategories||item.category){const cat=input(item.category,'Categoria do item',v=>{item.category=v;changed()});cat.placeholder='Categoria (opcional)';cat.className='category';fields.append(cat)}
+   const remove=button('×',()=>{draft.list.items=draft.list.items.filter(i=>i.id!==item.id);changed();render();saveList()});remove.setAttribute('aria-label','Remover '+item.text);
+   row.append(check,fields,remove);box.append(row);
+  }
+  const add=document.createElement('div');add.className='actions';const field=input('','Novo item',()=>{});field.placeholder='Adicionar item';field.id='new-item';
+  const addItem=()=>{if(!field.value.trim())return;draft.list.items.push({id:uuid(),text:field.value.trim(),category:'',completed:false});changed();render();saveList()};field.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();addItem()}};box.append(field);add.append(button('Adicionar',addItem),button('Salvar alterações',saveList,'primary'),button('Categorias',()=>{showCategories=!showCategories;render()}));box.append(add);
+  const refresh=button('Consultar versão salva',async()=>{backup=structuredClone(draft);await call('open_list',{listId:draft.list.id},true)});box.append(refresh);
+  if(backup)box.append(button('Restaurar rascunho',()=>{draft=structuredClone(backup);dirty=true;lastRequest=null;render();status('Rascunho restaurado; revise antes de salvar.')}));
+ }else{
+  const label=document.createElement('label');label.htmlFor='journal';label.textContent='Quer me contar como foi hoje?';const area=document.createElement('textarea');area.id='journal';area.placeholder='Pode escrever ou falar do seu jeito.';area.value=draft.text||'';area.oninput=()=>{draft.text=area.value;changed()};box.append(label,area);
+  const submit=button('Registrar meu dia',saveJournal,'primary');submit.disabled=busy||Boolean(current?.entry&&!dirty&&draft.text===current.entry.text);box.append(submit);
+ }
+ box.querySelectorAll('input,textarea,button').forEach(e=>{if(busy)e.disabled=true});
+ notify('ui/notifications/size-changed',{height:document.documentElement.scrollHeight});
+}
+function operations(){const list=draft.list,base=current.list,ops=[];if(list.title!==base.title)ops.push({type:'rename',title:list.title});
+ for(const item of base.items)if(!list.items.some(i=>i.id===item.id))ops.push({type:'remove',itemId:item.id});
+ for(const item of list.items){const old=base.items.find(i=>i.id===item.id);if(!old){ops.push({type:'add',itemId:item.id,text:item.text,category:item.category||''});if(item.completed)ops.push({type:'set_completed',itemId:item.id,completed:true})}else{if(item.text!==old.text||(item.category||'')!==(old.category||''))ops.push({type:'edit',itemId:item.id,text:item.text,category:item.category||''});if(item.completed!==old.completed)ops.push({type:'set_completed',itemId:item.id,completed:item.completed})}}
+ return ops;
+}
+async function call(name,args,force=false){if(busy)return;busy=true;render();status('Salvando ou consultando…');try{const result=await request('tools/call',{name,arguments:args});if(result.isError||result.structuredContent?.saved===false&&name!=='open_diary')throw Error(result.content?.find(c=>c.type==='text')?.text||'O salvamento não foi confirmado.');receive(result,force);return result}catch(e){status(e.message+' O rascunho permanece neste cartão.',true)}finally{busy=false;render()}}
+async function saveList(){const ops=operations();if(!ops.length){status('Nenhuma alteração para salvar.');return}if(!lastRequest)lastRequest={requestId:uuid(),listId:current.list.id,expectedVersion:current.list.version,operations:ops};await call('update_list',lastRequest,true)}
+async function saveJournal(){if(!draft.text?.trim()){status('Escreva algo antes de registrar.',true);return}if(current?.entry&&!dirty&&draft.text===current.entry.text){status('Esta entrada já foi registrada.');return}if(!lastRequest)lastRequest={requestId:uuid(),entryId:uuid(),text:draft.text};await call('save_journal',lastRequest,true)}
+function receive(result,force=false){const data=result.structuredContent;if(!data)return;if(result.isError){status(result.content?.[0]?.text||'Falha de salvamento.',true);return}if(dirty&&!force){status('Há uma atualização na conversa; seu rascunho foi mantido. Consulte a versão salva antes de continuar.',true);return}
+ if(data.kind==='list'){current=structuredClone(data);draft=structuredClone(data);dirty=false;lastRequest=null}
+ else if(data.kind==='journal'){current=structuredClone(data);draft={kind:'journal',text:data.entry?.text||''};dirty=false;lastRequest=null}
+ $('mode').hidden=!data.fixture;status(data.saved?(data.fixture?'Salvo somente no ambiente de teste.':'Salvamento confirmado nos registros.'):'Escreva do seu jeito; nada foi registrado ainda.');render();
+ if(data.saved)notify('ui/update-model-context',{structuredContent:{kind:data.kind,listId:data.list?.id,version:data.list?.version,entryId:data.entry?.id}});
+}
+window.addEventListener('message',event=>{if(event.source!==window.parent||event.data?.jsonrpc!=='2.0')return;const m=event.data;if(m.id&&pending.has(m.id)){const p=pending.get(m.id);pending.delete(m.id);clearTimeout(p.timer);m.error?p.reject(Error(m.error.message||'Falha na conexão.')):p.resolve(m.result);return}if(m.method==='ui/notifications/tool-result')receive(m.params);if(m.method==='ui/notifications/tool-cancelled')status('Ação cancelada; nada foi confirmado.',true);if(m.method==='ui/notifications/host-context-changed')applyHost(m.params)});
+function applyHost(ctx){const vars=ctx?.styles?.variables||{};for(const [key,value]of Object.entries(vars))if(key.startsWith('--')&&typeof value==='string')document.documentElement.style.setProperty(key,value);const insets=ctx?.safeAreaInsets;if(insets)document.body.style.padding=`${Math.max(10,insets.top||0)}px ${Math.max(10,insets.right||0)}px ${Math.max(10,insets.bottom||0)}px ${Math.max(10,insets.left||0)}px`}
+request('ui/initialize',{protocolVersion:'2026-01-26',appInfo:{name:'mamae-mins-checklist',version:'0.4.0'},appCapabilities:{availableDisplayModes:['inline']}}).then(value=>{applyHost(value?.hostContext);notify('ui/notifications/initialized',{})}).catch(()=>status('Abra este cartão por uma ferramenta conectada do Mamãe Mins. Nenhum salvamento está ativo.',true));
+</script></body></html>
+
