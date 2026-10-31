@@ -1,0 +1,18 @@
+import assert from 'node:assert/strict';
+import {formatDiarySelection} from '../lib/diary-format.mjs';
+import {build} from 'esbuild';
+import React from 'react';
+import {renderToStaticMarkup} from 'react-dom/server';
+let result=formatDiarySelection('Meu dia foi bom',12,15,'bold');assert.equal(result.text,'Meu dia foi **bom**');assert.equal(result.text.slice(result.selectionStart,result.selectionEnd),'bom');
+assert.equal(formatDiarySelection('Meu dia',0,7,'heading').text,'## Meu dia');
+assert.equal(formatDiarySelection('A\nB',0,3,'bullet').text,'- A\n- B');
+assert.equal(formatDiarySelection('A\nB',0,3,'numbered').text,'1. A\n2. B');
+assert.equal(formatDiarySelection('antes\nmeu dia\ndepois',7,10,'quote').text,'antes\n> meu dia\ndepois');
+assert.equal(formatDiarySelection('',0,0,'italic').text,'*texto*');
+assert.equal(formatDiarySelection('\ntexto',0,0,'heading').text,'## texto\ntexto');
+await build({entryPoints:['app/diary-editor.tsx'],bundle:true,platform:'node',format:'esm',outfile:'.sites-runtime/test-diary-ui.mjs',external:['react','react-dom/*','react-markdown','lucide-react']});
+const {DiaryText,default:DiaryEditor}=await import('../.sites-runtime/test-diary-ui.mjs');
+const html=renderToStaticMarkup(React.createElement(DiaryText,{text:'## Meu dia\n\n**bom** e *leve*\n\n- caminhar\n- ler'}));assert.ok(html.includes('<h2>Meu dia</h2>')&&html.includes('<strong>bom</strong>')&&html.includes('<em>leve</em>')&&html.includes('<li>ler</li>'));
+const unsafe=renderToStaticMarkup(React.createElement(DiaryText,{text:'<script>alert(1)</script>\n\n[clique](javascript:alert%281%29)'}));assert.ok(!unsafe.includes('<script>')&&!unsafe.includes('javascript:'));
+const editor=renderToStaticMarkup(React.createElement(DiaryEditor,{value:'texto',onChange:()=>{}}));assert.ok(editor.includes('aria-label="Negrito"')&&editor.includes('aria-label="Título"')&&editor.includes('aria-label="Prévia"'));
+console.log('PASS: selection formatting, headings, lists, quotes, markdown display, toolbar and unsafe content handling.');

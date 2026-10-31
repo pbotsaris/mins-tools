@@ -12,7 +12,7 @@
     "start": "node --import ./scripts/sites-env.mjs ./node_modules/wrangler/bin/wrangler.js dev --config dist/server/wrangler.json --local --persist-to .wrangler/state --ip 127.0.0.1 --inspector-port 0",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
     "db:generate": "drizzle-kit generate",
-    "test": "node --import ./scripts/sites-env.mjs tests/engine.mjs && node --import ./scripts/sites-env.mjs tests/mcp-views.mjs"
+    "test": "node tests/diary-format.mjs && node --import ./scripts/sites-env.mjs tests/engine.mjs && node --import ./scripts/sites-env.mjs tests/mcp-views.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",
@@ -35,6 +35,7 @@
     "react-day-picker": "^10.0.1",
     "react-dom": "19.2.6",
     "react-hook-form": "^7.85.0",
+    "react-markdown": "^10.1.0",
     "react-resizable-panels": "^4.12.2",
     "recharts": "^3.8.0",
     "sonner": "^2.0.8",
