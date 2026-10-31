@@ -1,0 +1,25 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "dev-6ae641633c788191b1d9d03775fbbc81",
+  "description": "poderes de mins",
+  "author": {
+    "name": "App developer"
+  },
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "capabilities": [],
+        "category": "Other",
+        "defaultPrompt": null,
+        "developerName": "App developer",
+        "displayName": "mcp-mins",
+        "longDescription": "poderes de mins",
+        "shortDescription": "poderes de mins"
+      },
+      "apps": "./.app.json"
+    }
+  },
+  "version": "1.0.1"
+}
+
+

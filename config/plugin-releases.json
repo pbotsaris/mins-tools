@@ -1,0 +1,232 @@
+[
+  {
+    "folder": "apoio-maternidade",
+    "files": [
+      {
+        "path": ".app.json",
+        "size_bytes": 243
+      },
+      {
+        "path": ".codex-plugin/plugin.json",
+        "size_bytes": 964
+      },
+      {
+        "path": ".mcp.json",
+        "size_bytes": 352
+      },
+      {
+        "path": "mcp.json",
+        "size_bytes": 403
+      },
+      {
+        "path": "plugin.json",
+        "size_bytes": 803
+      },
+      {
+        "path": "runtime/.gitignore",
+        "size_bytes": 29
+      },
+      {
+        "path": "runtime/README.md",
+        "size_bytes": 7315
+      },
+      {
+        "path": "runtime/package.json",
+        "size_bytes": 230
+      },
+      {
+        "path": "runtime/scripts/operation-snapshot.mjs",
+        "size_bytes": 1100
+      },
+      {
+        "path": "runtime/src/app.html",
+        "size_bytes": 10954
+      },
+      {
+        "path": "runtime/src/engine.mjs",
+        "size_bytes": 7908
+      },
+      {
+        "path": "runtime/src/fixture-host.html",
+        "size_bytes": 2660
+      },
+      {
+        "path": "runtime/src/mcp.mjs",
+        "size_bytes": 5998
+      },
+      {
+        "path": "runtime/src/server.mjs",
+        "size_bytes": 3523
+      },
+      {
+        "path": "runtime/src/store.mjs",
+        "size_bytes": 3198
+      },
+      {
+        "path": "runtime/test/engine.test.mjs",
+        "size_bytes": 7269
+      },
+      {
+        "path": "skills/setup/SKILL.md",
+        "size_bytes": 7531
+      },
+      {
+        "path": "skills/super-mamae/SKILL.md",
+        "size_bytes": 17351
+      },
+      {
+        "path": "skills/super-mamae/agents/openai.yaml",
+        "size_bytes": 93
+      },
+      {
+        "path": "skills/super-mamae/references/armazenamento.md",
+        "size_bytes": 5118
+      },
+      {
+        "path": "skills/super-mamae/references/contexto-inicial.md",
+        "size_bytes": 3396
+      },
+      {
+        "path": "skills/super-mamae/references/integracao-v040.md",
+        "size_bytes": 5118
+      },
+      {
+        "path": "skills/super-mamae/references/listas-e-diario.md",
+        "size_bytes": 11626
+      },
+      {
+        "path": "skills/super-mamae/references/memoria.md",
+        "size_bytes": 6637
+      }
+    ],
+    "next_offset": null,
+    "contents": {},
+    "missing_paths": [],
+    "size_limited_paths": [],
+    "plugin": {
+      "plugin_id": "plugins_6ae4cfbeeb208191974d2bb1c2155746",
+      "name": "apoio-maternidade",
+      "description": "Apoio em português para maternidade, diário em conversa, listas e contexto pessoal revisável.",
+      "version": "0.4.5",
+      "current_release_id": "pluginrel_6ae642afad748191a59b999d6003ab64",
+      "scope": "USER",
+      "discoverability": "PRIVATE"
+    }
+  },
+  {
+    "folder": "mcp-mins",
+    "files": [
+      {
+        "path": ".app.json",
+        "size_bytes": 127
+      },
+      {
+        "path": ".codex-plugin/plugin.json",
+        "size_bytes": 476
+      },
+      {
+        "path": "plugin.json",
+        "size_bytes": 598
+      },
+      {
+        "path": "skills/super-mamae/SKILL.md",
+        "size_bytes": 17351
+      },
+      {
+        "path": "skills/super-mamae/agents/openai.yaml",
+        "size_bytes": 93
+      },
+      {
+        "path": "skills/super-mamae/references/armazenamento.md",
+        "size_bytes": 5118
+      },
+      {
+        "path": "skills/super-mamae/references/contexto-inicial.md",
+        "size_bytes": 3396
+      },
+      {
+        "path": "skills/super-mamae/references/integracao-v040.md",
+        "size_bytes": 5118
+      },
+      {
+        "path": "skills/super-mamae/references/listas-e-diario.md",
+        "size_bytes": 11626
+      },
+      {
+        "path": "skills/super-mamae/references/memoria.md",
+        "size_bytes": 6637
+      }
+    ],
+    "next_offset": null,
+    "contents": {},
+    "missing_paths": [],
+    "size_limited_paths": [],
+    "plugin": {
+      "plugin_id": "plugin_asdk_app_6ae641633c788191b1d9d03775fbbc81",
+      "name": "dev-6ae641633c788191b1d9d03775fbbc81",
+      "description": "poderes de mins",
+      "version": "1.0.1",
+      "current_release_id": "pluginrel_6ae642bada088191ae5957deaa87f950",
+      "scope": "USER",
+      "discoverability": "PRIVATE"
+    }
+  },
+  {
+    "folder": "listas-e-diario",
+    "files": [
+      {
+        "path": ".app.json",
+        "size_bytes": 133
+      },
+      {
+        "path": ".codex-plugin/plugin.json",
+        "size_bytes": 742
+      },
+      {
+        "path": "plugin.json",
+        "size_bytes": 867
+      },
+      {
+        "path": "skills/super-mamae/SKILL.md",
+        "size_bytes": 17351
+      },
+      {
+        "path": "skills/super-mamae/agents/openai.yaml",
+        "size_bytes": 93
+      },
+      {
+        "path": "skills/super-mamae/references/armazenamento.md",
+        "size_bytes": 5118
+      },
+      {
+        "path": "skills/super-mamae/references/contexto-inicial.md",
+        "size_bytes": 3396
+      },
+      {
+        "path": "skills/super-mamae/references/integracao-v040.md",
+        "size_bytes": 5118
+      },
+      {
+        "path": "skills/super-mamae/references/listas-e-diario.md",
+        "size_bytes": 11626
+      },
+      {
+        "path": "skills/super-mamae/references/memoria.md",
+        "size_bytes": 6637
+      }
+    ],
+    "next_offset": null,
+    "contents": {},
+    "missing_paths": [],
+    "size_limited_paths": [],
+    "plugin": {
+      "plugin_id": "plugin_asdk_app_sites_fd3f8c37899c81918d1d10e99f1ebbff",
+      "name": "dev-fd3f8c37899c81918d1d10e99f1ebbff",
+      "description": "Seu espaço privado para listas e diário, por texto ou voz.",
+      "version": "1.0.1",
+      "current_release_id": "pluginrel_6ae642c7f19c8191ad8dd9fcfb725238",
+      "scope": "USER",
+      "discoverability": "PRIVATE"
+    }
+  }
+]

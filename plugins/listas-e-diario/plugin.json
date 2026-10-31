@@ -1,0 +1,25 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "author": {
+    "name": "App developer"
+  },
+  "description": "Seu espa\u00e7o privado para listas e di\u00e1rio, por texto ou voz.",
+  "extensions": {
+    "com.openai": {
+      "apps": "./.app.json",
+      "interface": {
+        "capabilities": [],
+        "category": "Other",
+        "defaultPrompt": null,
+        "developerName": "App developer",
+        "displayName": "Mam\u00e3e Mins \u00b7 Listas e di\u00e1rio",
+        "longDescription": "Seu espa\u00e7o privado para listas e di\u00e1rio, por texto ou voz.",
+        "shortDescription": "Seu espa\u00e7o privado para listas e di\u00e1rio, por texto ou voz.",
+        "websiteURL": "https://mamae-mins-diario.mellowcrow7.chatgpt.site"
+      }
+    }
+  },
+  "name": "dev-fd3f8c37899c81918d1d10e99f1ebbff",
+  "version": "1.0.1"
+}
+

@@ -1,0 +1,57 @@
+{
+  "id": "appgprj_6ae4e07339b48191a13b2e9d67264a64",
+  "title": "Mamãe Mins · Listas e diário",
+  "description": "Seu espaço privado para listas e diário, por texto ou voz.",
+  "slug": "mamae-mins-diario",
+  "status": "active",
+  "auth_client_id": "oaiapp_739d8872a7a2fa988723e5bf846042510c89782627ccb969a57cfc67c802e945",
+  "latest_version_number": 10,
+  "current_preview_url": null,
+  "current_live_url": "https://mamae-mins-diario.mellowcrow7.chatgpt.site",
+  "disabled_by": null,
+  "created_at": "2026-10-30T18:22:50.289030+00:00",
+  "updated_at": "2026-10-31T19:49:39.846930+00:00",
+  "latest_edit_context": {
+    "chatgpt_conversation_id": null,
+    "codex_thread_id": "01a192e4-c7bb-78f3-af61-8f1b9ee16c4d"
+  },
+  "expected_url": null,
+  "attached_page_id": null,
+  "current_user_role": "owner",
+  "access_mode": "custom",
+  "access_policy": {
+    "project_id": "appgprj_6ae4e07339b48191a13b2e9d67264a64",
+    "access_mode": "custom",
+    "allowed_account_user_ids": [
+      "09708743-7e77-4e9d-8331-df113b354f95"
+    ],
+    "external_visitor_count": 0,
+    "allowed_users": [
+      {
+        "account_user_id": "09708743-7e77-4e9d-8331-df113b354f95",
+        "email": "kagan.marina@gmail.com",
+        "name": "Marina Kagan",
+        "avatar_url": null,
+        "role": "owner"
+      }
+    ],
+    "allowed_groups": [],
+    "allowed_workspace_group_ids": [],
+    "allowed_tenant_group_ids": [],
+    "revision": 1,
+    "updated_at": "2026-10-30T18:22:51.743640+00:00",
+    "allowed_editors": []
+  },
+  "available_access_modes": [
+    "custom",
+    "public"
+  ],
+  "external_visitor_invites_enabled": true,
+  "automations": [],
+  "mcp_connection": {
+    "mcp_url": "https://mamae-mins-diario.mellowcrow7.chatgpt.site/mcp",
+    "oauth_resource": "https://mamae-mins-diario.mellowcrow7.chatgpt.site/mcp",
+    "plugin_id": "plugin_asdk_app_sites_fd3f8c37899c81918d1d10e99f1ebbff"
+  },
+  "requires_byop": false
+}

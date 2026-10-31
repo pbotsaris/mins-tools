@@ -1,0 +1,32 @@
+{
+  "interface": {
+    "defaultPrompt": [
+      "Quero come\u00e7ar meu acompanhamento.",
+      "Quero contar como foi meu dia.",
+      "Me ajuda a organizar uma lista."
+    ],
+    "developerName": "Marina Kagan",
+    "displayName": "Mam\u00e3e Mins",
+    "shortDescription": "Conversa, di\u00e1rio e listas",
+    "longDescription": "Apoio em portugu\u00eas para maternidade, di\u00e1rio em conversa, listas e contexto pessoal revis\u00e1vel.",
+    "category": "Other",
+    "capabilities": []
+  },
+  "apps": "./.app.json",
+  "extensions": {
+    "com.openai": {
+      "onboardingSkill": "./skills/setup/SKILL.md"
+    }
+  },
+  "name": "apoio-maternidade",
+  "version": "0.4.5",
+  "description": "Apoio em portugu\u00eas para maternidade, di\u00e1rio em conversa, listas e contexto pessoal revis\u00e1vel.",
+  "author": {
+    "name": "Marina Kagan",
+    "email": "kagan.marina@gmail.com"
+  },
+  "keywords": [],
+  "skills": "./skills",
+  "mcpServers": "./.mcp.json"
+}
+

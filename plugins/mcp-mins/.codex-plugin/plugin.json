@@ -1,0 +1,21 @@
+{
+  "interface": {
+    "capabilities": [],
+    "category": "Other",
+    "defaultPrompt": null,
+    "developerName": "App developer",
+    "displayName": "mcp-mins",
+    "longDescription": "poderes de mins",
+    "shortDescription": "poderes de mins"
+  },
+  "apps": "./.app.json",
+  "name": "dev-6ae641633c788191b1d9d03775fbbc81",
+  "version": "1.0.1",
+  "description": "poderes de mins",
+  "author": {
+    "name": "App developer"
+  },
+  "keywords": [],
+  "skills": "./skills"
+}
+

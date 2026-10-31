@@ -1,0 +1,28 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "author": {
+    "email": "kagan.marina@gmail.com",
+    "name": "Marina Kagan"
+  },
+  "description": "Apoio em português para maternidade, diário em conversa, listas e contexto pessoal revisável.",
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "defaultPrompt": [
+          "Quero começar meu acompanhamento.",
+          "Quero contar como foi meu dia.",
+          "Me ajuda a organizar uma lista."
+        ],
+        "developerName": "Marina Kagan",
+        "displayName": "Mamãe Mins",
+        "shortDescription": "Conversa, diário e listas"
+      },
+      "onboardingSkill": "./skills/setup/SKILL.md",
+      "apps": "./.app.json"
+    }
+  },
+  "name": "apoio-maternidade",
+  "version": "0.4.5"
+}
+
+
