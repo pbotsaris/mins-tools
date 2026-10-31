@@ -1,25 +1,29 @@
 # Mamãe Mins · Listas e diário
 
-Site privado com interface DaisyUI em português, temas Silk e Dim fornecidos pela usuária e componente MCP Apps autocontido.
+Site privado em português. Texto em D1 e áudio em R2, vinculados à identidade autenticada do Sites. O Site e as ferramentas MCP usam a mesma base. A memória histórica do plugin não é importada automaticamente.
 
-## Dados
+## Cartões na conversa
 
-Novos registros deste Site ficam em D1 (texto) e R2 (áudio), vinculados à identidade autenticada do Sites. O site e suas ferramentas MCP usam a mesma base. A memória histórica do plugin Mamãe Mins na Library não foi importada nem substituída; não existe sincronização automática com ela.
+`open_diary` abre um diálogo inline com um único editor formatado para o dia atual em America/Sao_Paulo, botão de envio e link para o diário completo no painel. Se já houver um registro hoje, ele é carregado para leitura e continuação. `save_today_diary` atualiza esse registro (preservando áudio existente) ou cria um, sem gerar outra entrada a cada envio. A revisão e o requestId protegem contra conflitos e reenvios. Se existirem vários registros antigos no mesmo dia, o cartão continua o mais recente e preserva os demais.
 
-## Uso
+`open_lists` abre um diálogo inline com a última lista alterada, ou a última criada quando ainda não há essa informação. Permite renomear, editar itens, marcar feitos, adicionar e excluir itens. Os campos de texto são salvos ao sair do campo ou pressionar Enter. O link abre todas as listas no painel.
 
-As listas ficam em `/`; o diário fica em `/diario`. As telas não têm abas de navegação entre si. No ChatGPT, `open_lists` mostra somente as listas sob demanda, e `open_diary` mostra somente o diário. O lembrete nativo é separado e depende de horário e frequência escolhidos; o Site não executa o agendamento. Um convite nativo do ChatGPT foi configurado separadamente para 21h30 todos os dias no fuso America/Sao_Paulo. O cartão será usado quando disponível no ambiente de execução; o link para /diario permanece como alternativa. Grave até dois minutos, ouça e salve. O botão só pede acesso ao microfone ao ser tocado. Dentro do ChatGPT, o host precisa permitir microfone; sem permissão, use o ditado da conversa ou abra o site. Não há transcrição automática nem chave de API externa. Novos registros do diário usam um editor visual com negrito, itálico, H2/H3 e listas. A formatação é salva no campo opcional `richText` como um documento validado; `text` continua disponível para busca, exportação e clientes antigos. Registros existentes em Markdown mantêm o editor, citação e prévia anteriores, com H3 adicional. Ambos os formatos permanecem editáveis; HTML arbitrário não é executado. Edições pela API somente de texto preservam `richText` quando o texto é idêntico e o removem quando o texto muda, evitando uma formatação desatualizada.
+Os cartões usam `widget/card-main.tsx`, `widget/card.tsx`, `widget/bridge.ts` e CSS próprio, sem carregar o app inteiro. `widget/card.html` é gerado pelo build. O bridge inicia MCP Apps, recebe resultados e faz chamadas pelo host; não acessa a base diretamente. O modo inicial é explicitamente inline. Não há acesso ao microfone nem a recursos de rede no cartão compacto.
 
-O endpoint POST /mcp expõe open_lists, open_diary, update_space e read_audio, além do recurso ui://mamae-mins/lists.html e ui://mamae-mins/diary.html. Sites gerencia autenticação e conexão privada.
+## Apps completos
+
+`open_diary_app` e `open_lists_app` têm entrypoints global e de conversa com recursos próprios em fullscreen. Mantêm o app completo, histórico, busca, listas, temas e gravação de áudio. No navegador, `/diario` abre o diário e `/` abre listas. Os links de painel usam o deep link do plugin provisionado pelo Sites. Há também links diretos ao navegador para hosts que não suportam painéis.
+
+URIs de recursos anteriores continuam disponíveis. Recursos HTML e descoberta não consultam dados pessoais; toda ferramenta que lê ou altera registros exige identidade. A política privada do Sites continua protegendo o endpoint.
+
+## Dados e segurança
+
+Novos registros formatados usam o campo opcional `richText` com documento validado e texto para busca/exportação. Registros antigos mantêm seu formato e editor anteriores no app completo. Não há HTML arbitrário nos registros. Áudio usa até 8 MB; não há transcrição automática.
+
+O lembrete de diário é uma automação separada. Abrir um cartão ou painel não cria nem altera agendamento.
 
 ## Desenvolvimento
 
-`pnpm build` gera o cartão autocontido e compila o site. `pnpm test` verifica D1 e R2 locais com Miniflare. O script build-widget.mjs incorpora CSS e JS, sem CDN. Migrações Drizzle são aplicadas pelo Sites na publicação.
+Código em um repositório em `~/dev/mins-tools`. `pnpm build` gera o app incorporável, os cartões compactos e o Site. `pnpm test` verifica inicialização do bridge, formatação, persistência, isolamento, conflitos, áudio, diário de hoje, lista recente e recursos inline/fullscreen. `tsc --noEmit` verifica tipos.
 
-## Verificação
-
-Compilação, TypeScript e testes de persistência, idempotência, conflito, isolamento, validação, áudio, exclusão e identidade passaram. Prévia aberta em navegador, mas sem identidade autenticada disponível. Microfone real, interface dentro do ChatGPT e aplicativo Android ainda precisam de teste no dispositivo.
-
-Compatibilidade do cartão: CSP publicada nos formatos MCP Apps e ChatGPT, recursos versionados com compatibilidade para URIs antigas. O diário usa o mesmo fluxo de cartão inline das listas e suporta tela cheia. As URIs antigas do diário continuam disponíveis para conversas existentes.
-
-Inicialização do cartão: o bridge MCP Apps sempre conclui `ui/initialize`, mesmo quando `window.openai.callTool` já está disponível. O resultado inicial fica no estado do app sem reatribuir `window.openai`. O teste `widget-startup.mjs` cobre hosts com e sem bridge de compatibilidade somente de leitura.
+A prévia usa dados isolados. A exibição final no ChatGPT e o comportamento de painel do host precisam ser confirmados no cliente após publicação; testes locais não substituem essa confirmação.
