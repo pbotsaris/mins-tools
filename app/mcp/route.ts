@@ -6,8 +6,8 @@ import html from '../../widget/app.html?raw';
 // @ts-ignore Self-contained compact conversation card.
 import cardHtml from '../../widget/card.html?raw';
 export const dynamic='force-dynamic';
-const listUri='ui://mamae-mins/lists-card-v2.html',diaryUri='ui://mamae-mins/diary-card-v2.html';
-const listAppUri='ui://mamae-mins/lists-app-v2.html',diaryAppUri='ui://mamae-mins/diary-app-v2.html';
+const listUri='ui://mamae-mins/lists-card-v3.html',diaryUri='ui://mamae-mins/diary-card-v3.html';
+const listAppUri='ui://mamae-mins/lists-app-v3.html',diaryAppUri='ui://mamae-mins/diary-app-v3.html';
 const uiFor=(view:string,full=false)=>{const uri=view==='diary'?(full?diaryAppUri:diaryUri):(full?listAppUri:listUri);return {ui:{resourceUri:uri},'openai/outputTemplate':uri,'openai/widgetAccessible':true,...(full?{'openai/ui':{entrypoints:[{type:'global'},{type:'thread'}]}}:{})}};
 const resources=[{uri:listUri,name:'Última lista · cartão',mimeType:'text/html;profile=mcp-app'},{uri:diaryUri,name:'Diário de hoje · cartão',mimeType:'text/html;profile=mcp-app'},{uri:listAppUri,name:'Todas as listas',mimeType:'text/html;profile=mcp-app'},{uri:diaryAppUri,name:'Diário completo',mimeType:'text/html;profile=mcp-app'}];
 const readAnnotations={readOnlyHint:true,destructiveHint:false,openWorldHint:false};
@@ -29,10 +29,10 @@ export async function POST(req:Request){let rpc:any;try{rpc=await req.json();con
  case 'resources/templates/list':return ok({resourceTemplates:[]});
  case 'resources/read':{
  const uri=rpc.params?.uri;
- const legacyListCards=['ui://mamae-mins/lists-card-v1.html'];
- const legacyDiaryCards=['ui://mamae-mins/diary-card-v1.html'];
- const legacyLists=['ui://mamae-mins/lists-app-v1.html','ui://mamae-mins/space.html','ui://mamae-mins/lists.html','ui://mamae-mins/lists-v2.html','ui://mamae-mins/lists-v3.html'];
- const legacyDiary=['ui://mamae-mins/diary-app-v1.html','ui://mamae-mins/diary.html','ui://mamae-mins/diary-v2.html','ui://mamae-mins/diary-v3.html','ui://mamae-mins/diary-v4.html'];
+ const legacyListCards=['ui://mamae-mins/lists-card-v1.html','ui://mamae-mins/lists-card-v2.html'];
+ const legacyDiaryCards=['ui://mamae-mins/diary-card-v1.html','ui://mamae-mins/diary-card-v2.html'];
+ const legacyLists=['ui://mamae-mins/lists-app-v1.html','ui://mamae-mins/lists-app-v2.html','ui://mamae-mins/space.html','ui://mamae-mins/lists.html','ui://mamae-mins/lists-v2.html','ui://mamae-mins/lists-v3.html'];
+ const legacyDiary=['ui://mamae-mins/diary-app-v1.html','ui://mamae-mins/diary-app-v2.html','ui://mamae-mins/diary.html','ui://mamae-mins/diary-v2.html','ui://mamae-mins/diary-v3.html','ui://mamae-mins/diary-v4.html'];
  const resource=resources.find(r=>r.uri===uri)||(legacyListCards.includes(uri)?resources[0]:legacyDiaryCards.includes(uri)?resources[1]:null)||(legacyLists.includes(uri)?resources[2]:legacyDiary.includes(uri)?resources[3]:null);
  if(!resource)throw Error('Componente não encontrado.');
  const full=[listAppUri,diaryAppUri].includes(resource.uri),view=[diaryUri,diaryAppUri].includes(resource.uri)?'diary':'lists';
