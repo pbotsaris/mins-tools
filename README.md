@@ -19,3 +19,5 @@ O endpoint POST /mcp expõe open_lists, open_diary, update_space e read_audio, a
 ## Verificação
 
 Compilação, TypeScript e testes de persistência, idempotência, conflito, isolamento, validação, áudio, exclusão e identidade passaram. Prévia aberta em navegador, mas sem identidade autenticada disponível. Microfone real, interface dentro do ChatGPT e aplicativo Android ainda precisam de teste no dispositivo.
+
+Compatibilidade do cartão: CSP publicada nos formatos MCP Apps e ChatGPT, recursos versionados com compatibilidade para URIs antigas. O diário anuncia entradas global e da conversa e suporta exibição inline e tela cheia.
