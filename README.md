@@ -27,3 +27,7 @@ O lembrete de diário é uma automação separada. Abrir um cartão ou painel n�
 Código em um repositório em `~/dev/mins-tools`. `pnpm build` gera o app incorporável, os cartões compactos e o Site. `pnpm test` verifica inicialização do bridge, formatação, persistência, isolamento, conflitos, áudio, diário de hoje, lista recente e recursos inline/fullscreen. `tsc --noEmit` verifica tipos.
 
 A prévia usa dados isolados. A exibição final no ChatGPT e o comportamento de painel do host precisam ser confirmados no cliente após publicação; testes locais não substituem essa confirmação.
+
+## Iframe com CSP restrita
+
+O build usa `scripts/csp-safe-validators.mjs` para selecionar o validador interpretado de cada cópia de Zod v4 nos bundles do navegador. Isso evita que a própria sondagem de suporte a eval dispare `securitypolicyviolation`. A política CSP não é relaxada e as validações continuam ativas. `tests/csp-validators.mjs` verifica valores válidos e inválidos com zero tentativas de avaliação dinâmica. Uma prévia local com iframe de origem opaca e CSP sem unsafe-eval passou da inicialização ao editor sem violações após a correção. Isso não substitui a verificação no cliente ChatGPT.
