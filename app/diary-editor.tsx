@@ -1,12 +1,12 @@
 'use client';
 import {useRef,useState} from 'react';
-import {Bold,Italic,Heading2,List,ListOrdered,Quote,Eye,Pencil} from 'lucide-react';
+import {Bold,Italic,Heading2,Heading3,List,ListOrdered,Quote,Eye,Pencil} from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import {formatDiarySelection} from '@/lib/diary-format.mjs';
 export function DiaryText({text}:{text:string}){return <div className="diary-markdown"><ReactMarkdown skipHtml components={{a:({children,href})=><a href={href} target="_blank" rel="noopener noreferrer">{children}</a>}}>{text}</ReactMarkdown></div>}
 export default function DiaryEditor({value,onChange,disabled=false,label='Texto do diário',autoFocus=false}:{value:string;onChange:(text:string)=>void;disabled?:boolean;label?:string;autoFocus?:boolean}){
  const ref=useRef<HTMLTextAreaElement>(null),[preview,setPreview]=useState(false);
  function format(style:string){const el=ref.current;if(!el)return;const next=formatDiarySelection(value,el.selectionStart,el.selectionEnd,style);if(next.text.length>20000)return;onChange(next.text);requestAnimationFrame(()=>{el.focus();el.setSelectionRange(next.selectionStart,next.selectionEnd)})}
- const actions=[{id:'bold',name:'Negrito',icon:Bold},{id:'italic',name:'Itálico',icon:Italic},{id:'heading',name:'Título',icon:Heading2},{id:'bullet',name:'Lista',icon:List},{id:'numbered',name:'Lista numerada',icon:ListOrdered},{id:'quote',name:'Citação',icon:Quote}];
+ const actions=[{id:'bold',name:'Negrito',icon:Bold},{id:'italic',name:'Itálico',icon:Italic},{id:'heading',name:'Título',icon:Heading2},{id:'heading3',name:'Título 3',icon:Heading3},{id:'bullet',name:'Lista',icon:List},{id:'numbered',name:'Lista numerada',icon:ListOrdered},{id:'quote',name:'Citação',icon:Quote}];
  return <div className="diary-editor"><div className="format-toolbar" role="toolbar" aria-label="Formatação do diário">{actions.map(({id,name,icon:Icon})=><button key={id} type="button" className="btn btn-ghost format-btn" title={name} aria-label={name} disabled={disabled||preview} onMouseDown={e=>e.preventDefault()} onClick={()=>format(id)}><Icon size={17}/></button>)}<button type="button" className="btn btn-ghost format-btn preview-btn" title={preview?'Voltar a escrever':'Prévia'} aria-label={preview?'Voltar a escrever':'Prévia'} aria-pressed={preview} onClick={()=>setPreview(!preview)}>{preview?<Pencil size={17}/>:<Eye size={17}/>}</button></div>{preview?<div className="diary-preview" aria-label="Prévia do diário">{value?<DiaryText text={value}/>:<span className="muted">Seu texto aparece aqui.</span>}</div>:<textarea ref={ref} autoFocus={autoFocus} className="textarea" placeholder="Escreva do seu jeito…" aria-label={label} value={value} disabled={disabled} maxLength={20000} onChange={e=>onChange(e.target.value)} onKeyDown={e=>{if((e.ctrlKey||e.metaKey)&&['b','i'].includes(e.key.toLowerCase())){e.preventDefault();format(e.key.toLowerCase()==='b'?'bold':'italic')}}}/>}</div>
 }

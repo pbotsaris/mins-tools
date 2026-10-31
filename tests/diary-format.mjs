@@ -5,6 +5,7 @@ import React from 'react';
 import {renderToStaticMarkup} from 'react-dom/server';
 let result=formatDiarySelection('Meu dia foi bom',12,15,'bold');assert.equal(result.text,'Meu dia foi **bom**');assert.equal(result.text.slice(result.selectionStart,result.selectionEnd),'bom');
 assert.equal(formatDiarySelection('Meu dia',0,7,'heading').text,'## Meu dia');
+assert.equal(formatDiarySelection('Meu dia',0,7,'heading3').text,'### Meu dia');
 assert.equal(formatDiarySelection('A\nB',0,3,'bullet').text,'- A\n- B');
 assert.equal(formatDiarySelection('A\nB',0,3,'numbered').text,'1. A\n2. B');
 assert.equal(formatDiarySelection('antes\nmeu dia\ndepois',7,10,'quote').text,'antes\n> meu dia\ndepois');
