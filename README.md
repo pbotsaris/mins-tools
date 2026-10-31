@@ -21,3 +21,5 @@ O endpoint POST /mcp expõe open_lists, open_diary, update_space e read_audio, a
 Compilação, TypeScript e testes de persistência, idempotência, conflito, isolamento, validação, áudio, exclusão e identidade passaram. Prévia aberta em navegador, mas sem identidade autenticada disponível. Microfone real, interface dentro do ChatGPT e aplicativo Android ainda precisam de teste no dispositivo.
 
 Compatibilidade do cartão: CSP publicada nos formatos MCP Apps e ChatGPT, recursos versionados com compatibilidade para URIs antigas. O diário usa o mesmo fluxo de cartão inline das listas e suporta tela cheia. As URIs antigas do diário continuam disponíveis para conversas existentes.
+
+Inicialização do cartão: o bridge MCP Apps sempre conclui `ui/initialize`, mesmo quando `window.openai.callTool` já está disponível. O resultado inicial fica no estado do app sem reatribuir `window.openai`. O teste `widget-startup.mjs` cobre hosts com e sem bridge de compatibilidade somente de leitura.
